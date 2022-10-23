@@ -55,7 +55,10 @@ mixer.init()
 mixer.music.load('jungles.ogg')
 mixer.music.play()
 
-
+font.init()
+font = font.Font(None, 70)
+win_text = font.render('Ты победил', True, (255, 215,0))
+win_text2 = font.render('Ты проиграл', True, (255, 215,0))
 
 window = display.set_mode((700, 500))
 
@@ -74,22 +77,43 @@ wall_one = GameSprite(wall_image, 300, 10, (10, 250), 0)
 wall_two = GameSprite(wall_image, 550, 350, (10, 250), 0)
 
 run = True
+finish = False
+
 while run:
     for i in event.get():
         if i.type == QUIT:
             run = False
+    
     if not finish:
-    sprite1.update()
-    vrag.update()
+        sprite1.update()
+        vrag.update()
 
-    window.blit(background, (0,0))
-    sprite1.reset()
-    vrag.reset()
-    socrovishe.reset()
 
-    wall_one.reset()
-    wall_two.reset()
+        window.blit(background, (0,0))\
+    
+        sprite1.reset()
+        vrag.reset()
+        socrovishe.reset()
 
-    display.update()
-    clock.tick(FPS)
+        wall_one.reset()
+        wall_two.reset()
+
+        if sprite.collide_rect(sprite1, socrovishe):
+            finish = True
+            window.blit(win_text, (300, 100))
+        
+        if sprite.collide_rect(sprite1, vrag):
+            finish = True
+            window.blit(win_text2, (300, 100))
+
+        if sprite.collide_rect(sprite1, wall_one):
+            finish = True
+            window.blit(win_text2, (300, 100))
+
+        if sprite.collide_rect(sprite1, wall_two):
+            finish = True
+            window.blit(win_text2, (300, 100))
+     
+        display.update()
+        clock.tick(FPS)
    
